@@ -17,7 +17,17 @@ public class RubyController : MonoBehaviour
     public int maxHealth = 5;
      int currentHealth;
 
-   public GameObject projectilePrefab;
+    public int maxAmmo = 5;
+    int currentAmmo;
+
+
+    public int Ammo
+    {
+        get { return currentAmmo; }
+    }
+
+    public GameObject projectilePrefab;
+    public GameObject KillBullet;
 
     public int health
     {
@@ -34,6 +44,7 @@ public class RubyController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        currentAmmo = maxAmmo;
         animator = GetComponent<Animator>();
     }
 
@@ -67,10 +78,18 @@ public class RubyController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && currentAmmo != 0)
         {
+            currentAmmo--;
             Launch();
+            Debug.Log("Cog was shot, you have" + currentAmmo );
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            LaunchKill();
+        }
+
     }
 
     private void FixedUpdate()
@@ -102,12 +121,29 @@ public class RubyController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
     }
+
+    public void ChangeAmmo(int amountt)
+    {
+        currentAmmo = Mathf.Clamp(currentAmmo + amountt, 0, maxAmmo);
+        Debug.Log(currentAmmo + "/" + maxAmmo);
+
+    }
     void Launch()
     {
         GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
 
         projectile projectile = projectileObject.GetComponent<projectile>();
         projectile.Launch(lookDirection, 300);
+
+        animator.SetTrigger("Launch");
+    }
+
+    void LaunchKill()
+    {
+        GameObject projectileObject = Instantiate(KillBullet, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        KillProjectile Killprojectile = projectileObject.GetComponent<KillProjectile>();
+       Killprojectile.LaunchDeadlyBullet(lookDirection, 300);
 
         animator.SetTrigger("Launch");
     }

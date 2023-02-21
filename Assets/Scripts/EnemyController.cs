@@ -82,4 +82,13 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Fixed");
         smokeEffect.Stop();
     }
+
+    public void Kill()
+    {
+        broken = false;
+        rigidbody2D.simulated = false;
+        smokeEffect.Stop();
+        animator.SetTrigger("Killed");
+        Destroy(gameObject);
+    }
 }

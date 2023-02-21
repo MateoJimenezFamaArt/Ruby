@@ -104,7 +104,9 @@ MonoBehaviour:
   invincibleTimer: 0
   speed: 5
   maxHealth: 5
+  maxAmmo: 5
   projectilePrefab: {fileID: 941065405380583625, guid: 3939e9a9f4c7e0d48bbebb69251642a7, type: 3}
+  KillBullet: {fileID: 2297766955066357420, guid: ebbdde0821ad23343b9512da05b769f2, type: 3}
 --- !u!50 &7111802705273176970
 Rigidbody2D:
   serializedVersion: 4

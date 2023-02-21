@@ -8,7 +8,7 @@ public class HealthCollectible : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         RubyController controller = other.GetComponent<RubyController>();
-        //Debug.Log("Esta funcionando el Trigger: " + collision);
+        //Debug.Log("Esta funcionando el Trigger: " + other);
         if (controller != null)
         {
             if (controller.health < controller.maxHealth)
