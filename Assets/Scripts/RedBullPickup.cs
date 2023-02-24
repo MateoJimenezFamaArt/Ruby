@@ -13,7 +13,7 @@ public class RedBullPickup : MonoBehaviour
             if (controller.health < controller.maxHealth)
             {
                 controller.ChangeHealth(2);
-                controller.speed = 6;
+                controller.speed = 8;
                 Destroy(gameObject);
             }
 

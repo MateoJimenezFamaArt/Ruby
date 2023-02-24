@@ -20,6 +20,8 @@ public class RubyController : MonoBehaviour
     public int maxAmmo = 5;
     int currentAmmo;
 
+    AudioSource audioSource;
+
 
     public int Ammo
     {
@@ -46,6 +48,13 @@ public class RubyController : MonoBehaviour
         currentHealth = maxHealth;
         currentAmmo = maxAmmo;
         animator = GetComponent<Animator>();
+
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
     //Update is called once per frame
@@ -90,6 +99,22 @@ public class RubyController : MonoBehaviour
             LaunchKill();
         }
 
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
+            if (hit.collider != null)
+            {
+                if (hit.collider != null)
+                {
+                    NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
+                    if (character != null)
+                    {
+                        character.DisplayDialog();
+                    }
+                }
+            }
+        }
+
     }
 
     private void FixedUpdate()
@@ -119,7 +144,7 @@ public class RubyController : MonoBehaviour
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+        UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     public void ChangeAmmo(int amountt)

@@ -12,6 +12,9 @@ public class EnemyController : MonoBehaviour
     bool broken = true;
     Animator animator;
 
+    public int maxHealthE = 2;
+    public int currentHealthE;
+
     Rigidbody2D rigidbody2D;
 
     public ParticleSystem smokeEffect;
@@ -22,6 +25,7 @@ public class EnemyController : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
         timer = changeTime;
         animator = GetComponent<Animator>();
+        currentHealthE = 2;
     }
 
     private void Update()
@@ -37,6 +41,9 @@ public class EnemyController : MonoBehaviour
             direction = -direction;
             timer = changeTime;
         }
+
+        Fix();
+
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -77,11 +84,22 @@ public class EnemyController : MonoBehaviour
 
     public void Fix()
     {
-        broken = false;
-        rigidbody2D.simulated = false;
-        animator.SetTrigger("Fixed");
-        smokeEffect.Stop();
+        if (currentHealthE == 0)
+        {
+            broken = false;
+            smokeEffect.Stop();
+            rigidbody2D.simulated = false;
+            animator.SetTrigger("Fixed");
+        }
+
     }
+
+    public void ChangeHealthE(int amount)
+    {
+        currentHealthE = Mathf.Clamp(currentHealthE + amount, 0, maxHealthE);
+
+    }
+
 
     public void Kill()
     {

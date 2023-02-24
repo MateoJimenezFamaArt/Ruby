@@ -5,6 +5,8 @@ using UnityEngine;
 public class projectile : MonoBehaviour
 {
      Rigidbody2D rigidbody2d;
+    bool isBullet = false;
+    float bulletTimer = 1.0f;
     // Start is called before the first frame update
     void Awake()
     {
@@ -14,24 +16,40 @@ public class projectile : MonoBehaviour
     public void Launch(Vector2 direction, float force)
     {
         rigidbody2d.AddForce(direction * force);
+        isBullet = true;    
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        EnemyController e = other.collider.GetComponent<EnemyController>();
-        if (e != null)
-        {
-            e.Fix();
-        }
+        EnemyController hit = other.collider.GetComponent<EnemyController>();
+            if (hit != null)
+            {
+                    hit.ChangeHealthE(-1);
+            }
 
         Destroy(gameObject);
     }
 
     private void Update()
     {
-        if(transform.position.magnitude > 1000.0f)
+        if (isBullet)
         {
-            Destroy(gameObject);
+            Debug.Log("Bullet fired");
+            bulletTimer -= Time.deltaTime;
+
+            if (bulletTimer < 0)
+            {
+                isBullet = false;
+                Destroy(gameObject);
+            }
         }
+
     }
+
+
+
+    
+
+    
+
 }
