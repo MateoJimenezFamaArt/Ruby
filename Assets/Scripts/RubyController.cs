@@ -12,8 +12,12 @@ public class RubyController : MonoBehaviour
     public float timeInvincible = 2.0f;
     bool isInvinicble;
     public float invincibleTimer;
-    
-    public float speed;
+
+    public bool isHigh = false;
+    public float HighTimer = 2.0f;
+
+
+    public float speed = 5;
     public int maxHealth = 5;
      int currentHealth;
 
@@ -60,6 +64,21 @@ public class RubyController : MonoBehaviour
     //Update is called once per frame
     private void Update()
     {
+        if (isHigh)
+        {
+            HighTimer -= Time.deltaTime;
+            speed = 2;
+
+            if (HighTimer < 0)
+            {
+                isHigh = false;
+                Debug.Log("Ruby no esta trabada");
+                speed = 5;
+            }
+        }
+
+
+
         horizontal = Input.GetAxis("Horizontal");
        // Debug.Log("horizontal: " + horizontal);
         vertical = Input.GetAxis("Vertical");
@@ -86,6 +105,9 @@ public class RubyController : MonoBehaviour
                 isInvinicble = false;
             }
         }
+
+
+
 
         if (Input.GetKeyDown(KeyCode.C) && currentAmmo != 0)
         {
